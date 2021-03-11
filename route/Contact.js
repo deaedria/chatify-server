@@ -1,13 +1,10 @@
 const route = require('express').Router()
 const contactController = require('../controller/Contact')
 
-route.get('/', contactController.getAllContact) //route nya nanti : /contacts
-route.get('/:id', contactController.getById) 
-// route.get('/:email', userController.getByEmail) 
-// route.post('/:name', userController.searchByName) 
-// route.post('/', userController.addNewUser) 
-// route.patch('/:username', userController.updateUser) 
-// route.delete('/:username', userController.deleteUser) 
+route.get('/', contactController.getAllContact)
+route.post('/', contactController.refreshContact) 
+route.get('/:id', contactController.getContactById) 
+route.post('/:search_contact', contactController.searchContactByName)  
 
 
 module.exports = route

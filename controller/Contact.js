@@ -1,37 +1,40 @@
+const formResponse = require('../helper/formResponse')
 const contactModel = require('../model/Contact');
 
 const contactController = {
     getAllContact: async(req, res) => {
         try {
-            const result = await contactModel.getAllContact()
-            res.status(200).send({
-                message: 'success get all contacts',
-                status: 200,
-                data: result,
-            })
+            const result = await contactModel.getAllContact(req)
+            formResponse(result, res)
         } catch (error) {
-            res.status(500).send({
-                message: `get contacts error ${error}`,
-                status: 500,
-                data: [],
-            })
+            formResponse(error, res)
         }
     },
 
-    getById: async(req, res) => {
+    getContactById: async(req, res) => {
         try {
-            const result = await contactModel.getById(req)
-            res.status(200).send({
-                message: 'success get by Id',
-                status: 200,
-                data: result,
-            })
+            const result = await contactModel.getContactById(req)
+            formResponse(result, res)
         } catch (error) {
-            res.status(500).send({
-                message: `get contact error ${error}`,
-                status: 500,
-                data: [],
-            })
+            formResponse(error, res)
+        }
+    },
+
+    refreshContact: async(req, res) => {
+        try {
+            const result = await contactModel.refreshContact();
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
+    searchContactByName: async(req, res) => {
+        try {
+            const result = await contactModel.searchContactByName(req.query.name);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
         }
     },
 }

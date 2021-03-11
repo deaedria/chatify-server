@@ -1,105 +1,87 @@
+const formResponse = require('../helper/formResponse')
 const userModel = require('../model/User');
 
 const userController = {
+    getUser: async(req, res) => {
+        try {
+            const result = await userModel.getUser(req)
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
     getAllUser: async(req, res) => {
         try {
-            const result = await userModel.getAllUser()
-            res.status(200).send({
-                message: 'success get all users',
-                status: 200,
-                data: result,
-            })
+            const result = await userModel.getAllUser(req)
+            formResponse(result, res)
         } catch (error) {
-            res.status(500).send({
-                message: `get users error ${error}`,
-                status: 500,
-                data: [],
-            })
+            formResponse(error, res)
         }
     },
 
-    getById: async(req, res) => {
-        try {
-            const result = await userModel.getById(req.params)
-            res.status(200).send({
-                message: 'success get by Id',
-                status: 200,
-                data: result,
-            })
-        } catch (error) {
-            res.status(500).send({
-                message: `get user error ${error}`,
-                status: 500,
-                data: [],
-            })
-        }
-    },
 
-    getByEmail: async(req, res) => {
-        try {
-            const result = await userModel.getByEmail(req.params)
-            res.status(200).send({
-                message: 'success get by Email',
-                status: 200,
-                data: result,
-            })
-        } catch (error) {
-            res.status(500).send({
-                message: `get user error ${error}`,
-                status: 500,
-                data: [],
-            })
-        }
-    },
+    // getById: async(req, res) => {
+    //     try {
+    //         const result = await userModel.getById(req.params)
+    //         formResponse(result, res)
+    //     } catch (error) {
+    //         formResponse(error, res)
+    //     }
+    // },
 
     deleteUser: async(req, res) => {
         try {
-            const result = await userModel.deleteUser(req)
-            res.status(200).send({
-                message: `delete success`,
-                status: 200,
-                data: result,
-            })
+            const result = await userModel.deleteUser(req.params)
+            formResponse(result, res)
         } catch (error) {
-            res.status(500).send({
-                message: 'update data failed',
-                status: 500,
-            })
+            formResponse(error, res)
         }
     },
 
     addNewUser: async(req, res) => {
         try {
-            const result = await userModel.addNewUser(req, res);
-            res.status(201).send({
-                message: `user has been created`,
-                status: 201,
-                data: result
-            })
-        } catch (error) { error }
+            const result = await userModel.addNewUser();
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
     },
 
     updateUser: async(req, res) => {
+
         try {
             const result = await userModel.updateUser(req, res);
-            result;
-        } catch (error) { error }
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
     },
 
-    searchByName: async(req, res) => {
+    searchUserByName: async(req, res) => {
         try {
-            const result = await userModel.searchByName(req.body.name);
-            res.status(200).send({
-                message: 'success get users',
-                status: 200,
-                data: result,
-            })
-        } catch (error) { 
-            res.status(500).send({
-                message: `get user error ${error}`,
-                status: 500,
-                data: [],
-            })
+            const result = await userModel.searchUserByName(req.query.name);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
+    login: async(req, res) => {
+        try {
+            const result = await userModel.login(req);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
+    register: async(req, res) => {
+        try {
+            const result = await userModel.register(req);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
         }
     },
 }

@@ -1,11 +1,13 @@
 const express= require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 require('dotenv').config();
 
-//middleware
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(cors())
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static('public'))
 
 const port = process.env.PORT;
 const host = process.env.DB_HOST;
@@ -29,5 +31,5 @@ app.get('*', (req, res) => {
 
 //end routing
 app.listen(port, host, () => {
-    console.log(`Example app listening at http://${host}:${port}${prefix}`)
+    console.log(`app listening at http://${host}:${port}${prefix}`)
 })

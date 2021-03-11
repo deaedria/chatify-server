@@ -11,9 +11,9 @@ const db = new Client({
 })
 
 db.connect().then(() => {
-    console.log('database berhasil terhubung');
+    console.log('database connected successfully');
 }).catch((err) => {
-    console.log('error, db tidak tersambung', err);
+    console.log('error, db cannot connected', err);
 })
 
 module.exports = db

@@ -41,7 +41,7 @@ const userController = {
 
     addNewUser: async(req, res) => {
         try {
-            const result = await userModel.addNewUser();
+            const result = await userModel.addNewUser(req);
             formResponse(result, res)
         } catch (error) {
             formResponse(error, res)

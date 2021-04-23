@@ -3,7 +3,7 @@ const db = require('../helper/connector')
 const contactListModel = {
     getContactListByUserId: (req)=> {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT contacts.phone, contacts_list.contact_name FROM contacts LEFT JOIN contacts_list ON contacts_list.user_id = ${req.query.id} AND contacts_list.contact_id = contacts.contact_id WHERE contacts_list.contact_name is not null`, (err, result) => {
+            db.query(`SELECT contacts.phone, contacts_list.contact_name FROM contacts LEFT JOIN contacts_list ON contacts_list.user_id = ${req.query.id} AND contacts_list.contact_id = contacts.contact_id WHERE contacts_list.contact_id is not null`, (err, result) => {
                 if(result.rows.length < 1){
                     reject({message: `contact list not found`, status: 400, data: []})
                 }

@@ -81,7 +81,7 @@ const userModel = {
                     }else if((username == checkUsername) || (phone == checkPhone) || (email == checkEmail)) {
                         reject({message: `username/phone/email is exists`, status: 400})
                     }else{
-                        const file = req.file?.filename ? `uploads/images/${req.file.filename}` : null
+                        const file = req.file?.filename ? `/uploads/images/${req.file.filename}` : null
 
                         bcrypt.genSalt(10, function(saltError, salt){
                             bcrypt.hash(password, salt, function(hashingError, hash){
@@ -114,7 +114,7 @@ const userModel = {
                     reject({message: `user id not found`, status: 400, data: {}})
                 }
                 if(!error) {
-                    const file = req.file?.filename ? `uploads/images/${req.file.filename}` : result.rows[0].photo_profile
+                    const file = req.file?.filename ? `/uploads/images/${req.file.filename}` : result.rows[0].photo_profile
                     const {
                         name = result.rows[0]?.name, 
                         phone = result.rows[0]?.phone,  

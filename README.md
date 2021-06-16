@@ -1,6 +1,7 @@
-## Chatify-Server
+# Chatify-Server
 
-This is a ExpressJs-based API for [frontend project](https://github.com/deaedria/chatify-react-ui.git). It uses PostgreSQL as its database
+## About
+Chatify is a web app that allows users create their personal account, send and search messages. Beside text, users can also send image. This is a server-side that created with Node.js and Express.js. It uses PostgreSQL as its database. [Frontend part](https://github.com/deaedria/chatify-react-ui.git) is built using React, Redux. 
 
 ## Getting started
 
@@ -41,9 +42,21 @@ To get the Node server running locally:
     |   └── User.js
     └── index.js
     
+## Documentation
+Open [Postman Collection](https://documenter.getpostman.com/view/14707903/Tz5p6dWQ)
+    
 ## Endpoints
 
-user endpoint
+when put under a domain with `PREFIX_URI`, it would look like:
+
+    https://www.example.com/api/v1/users
+    
+**Authentication**
+
+    POST     /users/login
+    POST     /users/register
+
+**User** endpoint
 
     GET      /users
     GET      /users/get_user?id=1
@@ -52,29 +65,20 @@ user endpoint
     PATCH    /users/1
     DEL      /users/1
 
-contact endpoint
+**Contact** endpoint
 
     GET      /contacts
     GET      /contacts/1
     POST     /contacts
     POST     /contacts/search_contact?name=a
    
-user's contact list endpoint
+**User's contact list** endpoint
 
     GET      /contactlist/user_id?id=1
     POST     /contactlist/user_id?id=1
     PATCH    /contactlist/1
     DEL      /contactlist/1
 
-authentication
-
-    POST     /users/login
-    POST     /users/register
-
-when put under a domain with `PREFIX_URI`, it would look like:
-
-    https://www.example.com/api/v1/users
-
-Paginate
+**Paginate**
 
     POST     /users?limit=4&page=2

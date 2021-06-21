@@ -29,6 +29,24 @@ const messageListController = {
         }
     },
 
+    deleteMessageById: async(req, res) => {
+        try {
+            const result = await messageListModel.deleteMessageById(req.params)
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
+    searchMessage: async(req, res) => {
+        try {
+            const result = await messageListModel.searchMessage(req);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
 }
 
 module.exports = messageListController

@@ -11,6 +11,24 @@ const chatListController = {
         }
     },
 
+    addChatListByUserId: async(req, res) => {
+        try {
+            const result = await chatListModel.addChatListByUserId(req);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
+    deleteChatListByUserId: async(req, res) => {
+        try {
+            const result = await chatListModel.deleteChatListByUserId(req.params)
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
 }
 
 module.exports = chatListController

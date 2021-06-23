@@ -31,14 +31,11 @@ const contactModel = {
 
     refreshContact: ()=> {
         return new Promise((resolve, reject) => {
-            db.query(`INSERT INTO contacts(name, phone, username) SELECT t1.name, t1.phone, t1.username FROM users t1 LEFT JOIN contacts ON contacts.username = t1.username WHERE contacts.username IS NULL RETURNING *`, (error, result) => {
-                if(result.rows.length < 1){
-                    reject({message: `there is no new contact`, status: 400, data: []})
-                }
+            db.query(`INSERT INTO contacts(contact_id, name, phone, username, photo_profile) SELECT t1.user_id, t1.name, t1.phone, t1.username, t1.photo_profile FROM users t1 LEFT JOIN contacts ON contacts.username = t1.username WHERE contacts.username IS NULL RETURNING *`, (error, result) => {
                 if(!error) { 
                     resolve({message: 'contact has been created', status: 201, data: result.rows})
                 }else{
-                    reject({message: 'create data failed', status: 500, data: error})
+                    reject({message: 'there is no new contact', status: 400, data: []})
                 }
             })
         })

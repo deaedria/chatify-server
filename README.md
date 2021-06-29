@@ -10,8 +10,11 @@ To get the Node server running locally:
 * Clone this repo with `git clone https://github.com/deaedria/chatify-server.git`
 * `cd chatify-server`
 * `yarn install` to install all required dependencies
-* Create a `.env` file and reference the `.env.example` file
-* `yarn test` to start the local server
+* Create a `.env` file and reference the `env.example` file
+* `yarn start` to start the local server
+
+## Database
+Open [database](https://drive.google.com/file/d/14CUkkaEvSdFAJhW1aoD878ucTw2NYgIV/view?usp=sharing)
 
 ## Folder Structure
 

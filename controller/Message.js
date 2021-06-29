@@ -47,6 +47,15 @@ const messageListController = {
         }
     },
 
+    updateStatusMessageById: async(req, res) => {
+        try {
+            const result = await messageListModel.updateStatusMessageById(req);
+            formResponse(result, res)
+        } catch (error) {
+            formResponse(error, res)
+        }
+    },
+
 }
 
 module.exports = messageListController

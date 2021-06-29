@@ -3,7 +3,7 @@ const db = require('../helper/connector')
 const messageListModel = {
     getMessageByUserIdAndContactId: (req) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT single_chat_message.scm_id, single_chat_message.content, single_chat_message.sender_id, single_chat_message.time, contacts_list.contact_name, contacts_list.friend_photo, users.photo_profile 
+            db.query(`SELECT single_chat_message.scm_id, single_chat_message.content, single_chat_message.sender_id, single_chat_message.status, single_chat_message.time, contacts_list.contact_name, contacts_list.friend_photo, users.photo_profile 
             FROM contacts_list LEFT JOIN single_chat_message ON contacts_list.contact_id = ${req.query.contact_id} AND contacts_list.user_id = ${req.query.id} AND single_chat_message.contact_account = ${req.query.contact_id} AND single_chat_message.user_account = ${req.query.id} JOIN users
             ON users.user_id = ${req.query.id} WHERE single_chat_message.content IS NOT NULL ORDER BY single_chat_message.time ASC`, (err, result) => {
                 if (result?.rows.length < 1) {
@@ -153,12 +153,34 @@ const messageListModel = {
             WHERE single_chat.contact_id is not null AND LOWER(single_chat_message.content) LIKE 
             '%${textName}%' ORDER BY single_chat_message.time DESC`, (err, result) => {
                 if(!err) {
-                    resolve({message: 'get all contacts success', status: 200, data: result.rows})
+                    resolve({message: 'get all messages success', status: 200, data: result.rows})
                 }else{
-                    reject({message: `get contacts error ${err}`, status: 500, data: []})
+                    reject({message: `get messages error ${err}`, status: 500, data: []})
                 }
             })
         })  
+    },
+
+    updateStatusMessageById: (req, res)=> {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM single_chat_message WHERE sc_id = '${req.query.id}'`, (error, result) => {
+                if(result?.rows == '' || result?.rows.length < 1) {
+                    reject({message: `message id not found`, status: 400, data: {}})
+                }
+                if(!error) {
+                    const {id,sender_id,contact_id} = req.query;
+                    db.query("UPDATE single_chat_message SET status=$1 WHERE (sc_id=$2 AND sender_id=$3) OR (contact_account=$4 AND sender_id=$5) RETURNING *", ['read', id, sender_id, contact_id, sender_id ], (err, response) => {                        
+                        if(!err){ 
+                            resolve({message: `update sc_id ${id} with sender_id ${sender_id} and contact_id ${contact_id} success`, status: 200, data: response.rows})
+                        }else{
+                            reject({message: 'update data failed', status: 500, data: err})
+                        }
+                    })
+                }else{
+                    reject({message: 'update data failed', status: 500, data: error})
+                }           
+            })
+        })        
     },
 }
 

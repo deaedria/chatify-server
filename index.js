@@ -30,6 +30,6 @@ app.get('*', (req, res) => {
 })
 
 //end routing
-app.listen(port, host, () => {
-    console.log(`app listening at http://${host}:${port}${prefix}`)
+app.listen(port, () => {
+    console.log(`app listening at http://${process.env.HOST || "localhost"}:${port}`)
 })

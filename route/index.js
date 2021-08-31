@@ -3,7 +3,7 @@ const userRoute = require('./User')
 // const verifyToken = require('../helper/verifyToken')
 const contactRoute = require('./Contact')
 const contactListRoute = require('./ContactListEachUser')
-const chatListRoute = require('./ChatList')
+const chatListRoute = require('./Chatlist')
 const messageListRoute = require('./Message')
 const uploadRoute = require('./Upload')
 

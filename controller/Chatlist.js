@@ -1,5 +1,5 @@
 const formResponse = require('../helper/formResponse')
-const chatListModel = require('../model/ChatList');
+const chatListModel = require('../model/Chatlist');
 
 const chatListController = {
     getChatListByUserId: async(req, res) => {

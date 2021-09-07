@@ -13,9 +13,6 @@ To get the Node server running locally:
 * Create a `.env` file and reference the `env.example` file
 * `yarn start` to start the local server
 
-## Database
-Open [database](https://drive.google.com/file/d/14CUkkaEvSdFAJhW1aoD878ucTw2NYgIV/view?usp=sharing)
-
 ## Folder Structure
 
     ├── controllers                    

@@ -1,60 +1,98 @@
-const multer = require('multer')
-const path = require('path')
-const formResponse = require('./formResponse')
+const express = require("express");
+const multer = require("multer");
+const path = require("path")
 
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/uploads/images')
-    },
-    filename: function (req, file, cb) {
-      cb(null, `${Date.now()}-${file.originalname}`)
+let storagePhoto = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/uploads/images");
+  },
+  filename: function (req, file, cb) {
+    // let datetimestamp = Date.now();
+    cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+  }
+});
+
+let storageContent = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/uploads/content");
+  },
+  filename: function (req, file, cb) {
+    // let datetimestamp = Date.now();
+    cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`)
+  }
+});
+
+let uploadImg = multer({
+  storage: storagePhoto,
+  fileFilter: function (req, file, cb) {
+    let ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      return cb(new Error('Only images are allowed'))
     }
+    cb(null, true)
+  },
+  limits: {
+    fileSize: 5000000,
+  }
 })
 
-//upload initialitation
-let upload = multer({ 
-    storage: storage, 
-    limits: {fileSize: 5000000},
-    fileFilter: function(req, file, cb){
-        checkFileType(file, cb)
+let uploadC = multer({
+  storage: storageContent,
+  fileFilter: function (req, file, cb) {
+    let ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      return cb(new Error('Only images are allowed'))
     }
+    cb(null, true)
+  },
+  limits: {
+    fileSize: 5000000,
+  }
 })
 
-//check file type
-const checkFileType = (file, cb) =>{
-    const filetypes = /jpeg|jpg|png|gif/; //allowed ext
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase()); // check ext
-    const mimetype = filetypes.test(file.mimetype); //check mime
+const fromUpload = {
+  uploadImage: (req, res, next) => {
+    const uploadImage = uploadImg.single("images");
+    uploadImage(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        res.status(400).send({
+          message: err.message,
+          statusCode: 400,
+        });
+      } else if (err) {
+        res.status(400).send({
+          message: err.message,
+          statusCode: 400,
+        });
+      } else if (req.file == undefined || req.file === null) {
+        next();
+      } else {
+        next();
+      }
+    });
+  },
 
-    if(mimetype && extname){
-        return cb(null, true)
-    }else{
-        cb({message: 'Images Only'})
-    }
-}
+  uploadContent: (req, res, next) => {
+    const uploadContent = uploadC.single("content");
+    uploadContent(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        res.status(400).send({
+          message: err.message,
+          statusCode: 400,
+        });
+      } else if (err) {
+        res.status(400).send({
+          message: err.message,
+          statusCode: 400,
+        });
+      } else if (req.file === undefined || req.file === null) {
+        next();
+      } else {
+        next();
+      }
+    });
+  },
 
+};
 
-const formUpload = {
-    uploadImage: (req, res, next) => {
-        const uploadImage = upload.single('images')
-        uploadImage(req, res, (err) => {
-            if(err instanceof multer.MulterError) {
-                //A multer error occured when uploading
-                formResponse({
-                    message: err.message,
-                    status: 400
-                }, res)
-            }else if(err){
-                //An unknown error occured when uploading 
-                formResponse({
-                    message: err.message,
-                    status: 400
-                }, res)
-            }else{
-                next()
-            }
-        })
-    }
-}
-
-module.exports = formUpload
+module.exports = fromUpload;

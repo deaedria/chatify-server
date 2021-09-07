@@ -3,7 +3,7 @@ const messageListController = require('../controller/Message')
 const formUpload = require('../helper/formUpload')
 const verifyToken = require('../helper/verifyToken')
  
-route.post('/:key', verifyToken, formUpload.uploadImage, messageListController.addNewMessageForUser) 
+route.post('/:key', formUpload.uploadContent, messageListController.addNewMessageForUser) 
 // route.post('/:user_id', verifyToken, messageListController.addNewMessageForContact) 
 route.get('/search', verifyToken, messageListController.searchMessage)  
 route.get('/:key', verifyToken, messageListController.getMessageByUserIdAndContactId)  

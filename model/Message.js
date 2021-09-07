@@ -28,15 +28,15 @@ const messageListModel = {
                         if (!error) {
                             const sc_id2 = result1.rows[0] ? result1.rows[0].sc_id : null;
                             const status = 'unread'
-                            const file = req.file?.filename ? `/uploads/images/${req.file.filename}` : null
-
+                            const file = req.file?.filename ? `/uploads/content/${req.file.filename}` : null
+                            
                             let newBody = {...req.body, content: file}
 
-                            db.query('INSERT INTO single_chat_message(sc_id, content, time, status, user_account, contact_account, sender_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [sc_id1, file!==null ? newBody.content : content, `NOW()`, status, req.query.id, req.query.contact_id, sender_id], (err1, response1) => {
-                                db.query('INSERT INTO single_chat_message(sc_id, content, time, status, user_account, contact_account, sender_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [sc_id2, file!==null ? newBody.content : content, `NOW()`, status, req.query.contact_id, req.query.id, sender_id], (err2, response2) => {
+                            db.query('INSERT INTO single_chat_message(sc_id, content, time, status, user_account, contact_account, sender_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [sc_id1, file ? newBody.content : content, `NOW()`, status, req.query.id, req.query.contact_id, sender_id], (err1, response1) => {
+                                db.query('INSERT INTO single_chat_message(sc_id, content, time, status, user_account, contact_account, sender_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [sc_id2, file ? newBody.content : content, `NOW()`, status, req.query.contact_id, req.query.id, sender_id], (err2, response2) => {
                                     if (!err1 && !err2) {
-                                        db.query("UPDATE single_chat SET last_message=$1, last_time=$2 WHERE sc_id=$3", [file!==null ? newBody.content : content, `NOW()`, sc_id1], (err3, res) => {
-                                            db.query("UPDATE single_chat SET last_message=$1, last_time=$2 WHERE sc_id=$3", [file!==null ? newBody.content : content, `NOW()`, sc_id2], (err4, res) => {
+                                        db.query("UPDATE single_chat SET last_message=$1, last_time=$2 WHERE sc_id=$3", [file ? newBody.content : content, `NOW()`, sc_id1], (err3, res) => {
+                                            db.query("UPDATE single_chat SET last_message=$1, last_time=$2 WHERE sc_id=$3", [file ? newBody.content : content, `NOW()`, sc_id2], (err4, res) => {
                                                 if (!err4) {
                                                     const response = { data1: response1.rows[0], data2: response2.rows[0] }
                                                     resolve({ message: 'message has been created', status: 201, data: response })

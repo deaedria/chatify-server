@@ -65,7 +65,7 @@ const contactListModel = {
             // db.query(`SELECT contacts.phone, contacts.contact_id, contacts_list.contact_id, contacts_list.user_id FROM contacts, contacts_list where contacts_list.user_id = ${req.query.id} AND contacts.phone = '${req.body.phone}'`, (error, result) => {
             db.query(`SELECT contacts.contact_id FROM contacts WHERE contacts.phone = '${req.body.phone}'`, (error, result) => {
                 if(!error) {
-                    const value = result.rows[0].contact_id
+                    const value = result.rows[0]?.contact_id
                     if(result.rows == '' || result.rows.length < 1){
                         reject({message: `${req.body.contact_name} is not on this app yet`, status: 400})
                     }else{
